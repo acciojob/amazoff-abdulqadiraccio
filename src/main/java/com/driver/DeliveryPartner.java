@@ -7,7 +7,12 @@ public class DeliveryPartner {
 
     public DeliveryPartner(String id) {
         this.id = id;
-        this.numberOfOrders = 0;
+       this.numberOfOrders=0;
+    }
+
+
+
+    public DeliveryPartner() {
     }
 
     public String getId() {
