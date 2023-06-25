@@ -3,7 +3,7 @@ package com.driver;
 public class Order {
 
     private String id;
-    private String deliveryTime;
+    private int deliveryTime;
 
     public Order(String id, String deliveryTime) {
 
@@ -11,7 +11,8 @@ public class Order {
         //deliveryTime  = HH*60 + MM
         this.id=id;
 
-        this.deliveryTime=deliveryTime;
+        String time[] = deliveryTime.split(":");
+        this.deliveryTime = (Integer.parseInt(time[0]) * 60) + Integer.parseInt(time[1]);
 
     }
 
