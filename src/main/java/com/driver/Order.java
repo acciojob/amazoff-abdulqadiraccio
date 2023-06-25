@@ -28,11 +28,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getDeliveryTime() {
+    public int getDeliveryTime() {
         return deliveryTime;
     }
 
-    public void setDeliveryTime(String deliveryTime) {
+    public void setDeliveryTime(int deliveryTime) {
         this.deliveryTime = deliveryTime;
     }
 }

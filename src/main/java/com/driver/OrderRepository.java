@@ -31,6 +31,7 @@ public class OrderRepository {
 
 
     public void addOrderPartnerPair(String orderId, String partnerId) {
+
       if(orderMap.containsKey(orderId)&&partnerMap.containsKey(partnerId)) {
           if (partnerOrderMap.containsKey(partnerId)) {
               List<String> orderList = partnerOrderMap.get(partnerId);
@@ -66,7 +67,11 @@ public class OrderRepository {
     }
 
     public List getAllOrderList() {
-        return l;
+        List<String> orderlist=new ArrayList<>();
+        for(String X: orderMap.keySet()){
+            orderlist.add(X);
+        }
+        return orderlist;
     }
 
     public int getCountOfUnassignedOrder() {
@@ -85,9 +90,9 @@ public class OrderRepository {
         List<String> list = partnerOrderMap.get(partnerId);
 
         for (int i = 0; i < list.size(); i++) {
-            String orderTime = orderMap.get(list.get(i)).getDeliveryTime();
-            int delTime = (Integer.parseInt(orderTime.substring(0, 2))) * 60 + (Integer.parseInt(orderTime.substring(3)));
-            if (givenTime < delTime) {
+            int orderTime = orderMap.get(list.get(i)).getDeliveryTime();
+
+            if (givenTime < orderTime) {
                 count++;
             }
 
@@ -100,14 +105,12 @@ public class OrderRepository {
 
          int maxTime=0;
         for (int i = 0; i < list.size(); i++) {
-            String orderTime = orderMap.get(list.get(i)).getDeliveryTime();
-            int delTime= (Integer.parseInt(orderTime.substring(0, 2))) * 60 + (Integer.parseInt(orderTime.substring(3)));
+            int delTime = orderMap.get(list.get(i)).getDeliveryTime();
             if(delTime>=maxTime){
                 maxTime=delTime;
             }
 
         }
-
 
       String s1 =   Integer.toString(maxTime/60)  ;
         if(s1.length()<2){
