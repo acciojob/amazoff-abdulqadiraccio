@@ -33,20 +33,20 @@ public class OrderRepository {
     public void addOrderPartnerPair(String orderId, String partnerId) {
 
       if(orderMap.containsKey(orderId)&&partnerMap.containsKey(partnerId)) {
+          orderPartnerMap.put(orderId, partnerId);
+
+          List<String> listOfOrder = new ArrayList<>();
+
           if (partnerOrderMap.containsKey(partnerId)) {
-              List<String> orderList = partnerOrderMap.get(partnerId);
-              orderList.add(orderId);
-              partnerOrderMap.put(partnerId, orderList);
-          } else {
-              List<String> listOfOrder = new ArrayList<>();
+              listOfOrder = partnerOrderMap.get(partnerId);
+                            }
+
               listOfOrder.add(orderId);
               partnerOrderMap.put(partnerId, listOfOrder);
-          }
+
+          DeliveryPartner partner = partnerMap.get(partnerId);
+          partner.setNumberOfOrders(listOfOrder.size());
       }
-          int numberOfOrder= partnerOrderMap.get(partnerId).size();
-           DeliveryPartner partner = partnerMap.get(partnerId);
-           partner.setNumberOfOrders(numberOfOrder);
-          orderPartnerMap.put(orderId,partnerId);
 
     }
 
@@ -59,14 +59,16 @@ public class OrderRepository {
     }
 
     public int getOrderCount(String partnerId) {
+
         return partnerOrderMap.get(partnerId).size();
+
     }
 
-    public List getListOfOrders(String partnerId) {
+    public List<String> getListOfOrders(String partnerId) {
         return partnerOrderMap.get(partnerId);
     }
 
-    public List getAllOrderList() {
+    public List<String> getAllOrderList() {
         List<String> orderlist=new ArrayList<>();
         for(String X: orderMap.keySet()){
             orderlist.add(X);
@@ -75,13 +77,8 @@ public class OrderRepository {
     }
 
     public int getCountOfUnassignedOrder() {
-        int count = 0;
-        for (String orderId:orderMap.keySet()){
-            if(orderMap.containsKey(orderId) && !orderPartnerMap.containsKey(orderId)){
-                count++;
-            }
-        }
-        return count;
+
+        return orderMap.size()-orderPartnerMap.size();
     }
 
     public Integer getCountOfOrderLeftAfterGivenTime(String time, String partnerId) {
@@ -90,9 +87,9 @@ public class OrderRepository {
         List<String> list = partnerOrderMap.get(partnerId);
 
         for (int i = 0; i < list.size(); i++) {
-            int orderTime = orderMap.get(list.get(i)).getDeliveryTime();
+            int deliveryTime = orderMap.get(list.get(i)).getDeliveryTime();
 
-            if (givenTime < orderTime) {
+            if (givenTime < deliveryTime) {
                 count++;
             }
 
